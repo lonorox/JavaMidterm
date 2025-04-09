@@ -1,7 +1,8 @@
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.IOException;
+
 class chess{
     // BufferedReader file;
     
@@ -10,12 +11,17 @@ class chess{
     }
     
     public static void main(String[] args){
-        System.out.println("Hello World");
+        PGNReader reader = new PGNReader();
         try {
             BufferedReader file = readPgn("pgns/Tbilisi2015.pgn");
-            System.out.println(file.readLine());
+            reader.extractGames(file);
         } catch (IOException e) {
             System.out.println("File not found");
+        }
+        System.out.println(reader.getGames().size());
+        for (ChessGame game : reader.getGames()) {
+            System.out.println(game.getTags());
+            System.out.println(game.getMoves());
         }
     }
 }
