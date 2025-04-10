@@ -18,10 +18,8 @@ class chess{
         } catch (IOException e) {
             System.out.println("File not found");
         }
-        System.out.println(reader.getGames().size());
-        for (ChessGame game : reader.getGames()) {
-            System.out.println(game.getTags());
-            System.out.println(game.getMoves());
-        }
+        GameMaster master = new GameMaster(reader.getGames().get(0).getMoves());
+        master.analyzeGame();
+
     }
 }
