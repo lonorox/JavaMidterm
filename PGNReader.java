@@ -29,9 +29,9 @@ public class PGNReader {
             //check if line is a tag by searching for "[" and "]"
             if (line.contains("[") && line.contains("]")) {
                 // if there is a movetext, add the game to the list, and reset the movetext and tags
-                if (movetextBuilder.length() > 0) {
+                if (!movetextBuilder.isEmpty()) {
                     String movetext = movetextBuilder.toString().trim();
-                    games.add(new ChessGame(tags, movetext));
+                    addGame(new ChessGame(tags, movetext));
                     movetextBuilder = new StringBuilder();
                     tags = new HashMap<>();
                 }

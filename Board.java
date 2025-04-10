@@ -1,13 +1,37 @@
 import Pieces.*;
 
 public class Board {
-    Piece[][] board = new Piece[8][8];
-    
+    Piece[][] board;
+    final private int[][] alternativeBoard = new int[8][8];
     public Board() {
-        
+        board = new Piece[8][8];
+        initialize();
     }
-
-    public void initialize() {
+    public final void alternateInitialize() {
+        alternativeBoard[0][0] = -6;
+        alternativeBoard[0][1] = -5;
+        alternativeBoard[0][2] = -4;
+        alternativeBoard[0][3] = -3;
+        alternativeBoard[0][4] = -2;
+        alternativeBoard[0][5] = -4;
+        alternativeBoard[0][6] = -5;
+        alternativeBoard[0][7] = -6;
+        for (int i = 0; i < 8; i++) {
+            alternativeBoard[1][i] = -1;
+        }
+        alternativeBoard[7][0] = -6;
+        alternativeBoard[7][1] = -5;
+        alternativeBoard[7][2] = -4;
+        alternativeBoard[7][3] = -3;
+        alternativeBoard[7][4] = -2;
+        alternativeBoard[7][5] = -4;
+        alternativeBoard[7][6] = -5;
+        alternativeBoard[7][7] = -6;
+        for (int i = 0; i < 8; i++) {
+            alternativeBoard[6][i] = -1;
+        }
+    }
+    public final void initialize() {
         // initialize white pieces
         board[0][0] = new Rook("white", false);
         board[0][1] = new Knight("white", false);
