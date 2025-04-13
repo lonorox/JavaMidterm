@@ -18,7 +18,7 @@ class chess{
         } catch (IOException e) {
             System.out.println("File not found");
         }
-        GameMaster master = new GameMaster(reader.getGames().get(0).getMoves());
+        GameMaster master = new GameMaster(reader.getGames().getFirst().getMoves());
         master.analyzeGame();
 
     }
