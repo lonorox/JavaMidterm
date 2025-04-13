@@ -5,8 +5,14 @@ public class Board {
     final private int[][] alternativeBoard = new int[8][8];
     public Board() {
         board = new Piece[8][8];
-        initialize();
+        alternateInitialize();
+//        initialize();
     }
+
+    public int[][] getBoard() {
+        return this.alternativeBoard;
+    }
+
     public final void alternateInitialize() {
         alternativeBoard[0][0] = -6;
         alternativeBoard[0][1] = -5;
@@ -19,16 +25,16 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             alternativeBoard[1][i] = -1;
         }
-        alternativeBoard[7][0] = -6;
-        alternativeBoard[7][1] = -5;
-        alternativeBoard[7][2] = -4;
-        alternativeBoard[7][3] = -3;
-        alternativeBoard[7][4] = -2;
-        alternativeBoard[7][5] = -4;
-        alternativeBoard[7][6] = -5;
-        alternativeBoard[7][7] = -6;
+        alternativeBoard[7][0] = 6;
+        alternativeBoard[7][1] = 5;
+        alternativeBoard[7][2] = 4;
+        alternativeBoard[7][3] = 3;
+        alternativeBoard[7][4] = 2;
+        alternativeBoard[7][5] = 4;
+        alternativeBoard[7][6] = 5;
+        alternativeBoard[7][7] = 6;
         for (int i = 0; i < 8; i++) {
-            alternativeBoard[6][i] = -1;
+            alternativeBoard[6][i] = 1;
         }
     }
     public final void initialize() {
@@ -61,6 +67,32 @@ public class Board {
             board[6][i] = new Pawn("black", i);
         }
         
+    }
+
+    public static String getSymbol(int value) {
+        switch (Math.abs(value)) {
+            case 1: return value > 0 ? "♙ " : "♟ "; // Pawn
+            case 2: return value > 0 ? "♔ " : "♚ "; // King
+            case 3: return value > 0 ? "♕ " : "♛ "; // Queen
+            case 4: return value > 0 ? "♗ " : "♝ "; // Bishop
+            case 5: return value > 0 ? "♘ " : "♞ "; // Knight
+            case 6: return value > 0 ? "♖ " : "♜ "; // Rook
+            default: return ". "; // Empty square
+        }
+    }
+
+    public void drawBoard() {
+        for (int row = 7; row >= 0; row--) {
+            System.out.print((row + 1) + " ");
+            for (int col = 0; col < 8; col++) {
+                int piece = this.alternativeBoard[row][col];
+                System.out.print(getSymbol(piece) + " ");
+            }
+            System.out.println();
+        }
+        for (char c = 'a'; c <= 'h'; c++) {
+            System.out.print("  " + c);
+        }
     }
 
     
