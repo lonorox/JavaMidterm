@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public enum PieceMapper {
     PAWN('P', 1),
     KING('K', 2),
@@ -19,5 +22,17 @@ public enum PieceMapper {
 
     public char getSymbol() {
         return symbol;
+    }
+    private static final Map<Character, PieceMapper> SYMBOL_TO_TYPE = new HashMap<>();
+
+    static {
+        for (PieceMapper piece : values()) {
+            SYMBOL_TO_TYPE.put(piece.symbol, piece);
+        }
+    }
+    public static int getValueBySymbol(char symbol) {
+        return SYMBOL_TO_TYPE.getOrDefault(symbol, null) != null
+                ? SYMBOL_TO_TYPE.get(symbol).getValue()
+                : 0;
     }
 }
