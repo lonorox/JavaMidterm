@@ -1,9 +1,10 @@
 public class Pieces {
-    public static boolean isValidMove(Board board, int piece,int row, int col, MoveInfo move, boolean isWhite) {
+    public static boolean isValidMove(Board board, int piece,int row, int col, MoveInfo move, boolean isWhite, String enPassant) {
         int destCol = move.destination.charAt(0) - 'a';
         int destRow = move.destination.charAt(1) - '1';
+        if(board.getPiece(row,col) == 0) return false;
         if(move.capture){
-            if(board.getPiece(destRow,destCol) == 0){
+            if(board.getPiece(destRow,destCol) == 0 && !move.enPassant){
                 return false;
                 //capture unavailable since square is empty
             }
@@ -16,7 +17,7 @@ public class Pieces {
             }
         }
         return switch (piece) {
-            case 1 -> validPawn(board, row, col, move, isWhite);
+            case 1 -> validPawn(board, row, col, move, isWhite,enPassant);
             case 2 -> validKing(board, row, col, move, isWhite);
             case 3 -> validQueen(board, row, col, move, isWhite);
             case 4 -> validBishop(board, row, col, move, isWhite);
@@ -26,7 +27,17 @@ public class Pieces {
         };
     }
 
-    public static boolean validPawn(Board board,int row, int col ,MoveInfo move, boolean isWhite) {
+    public static String enPassant(Board board,int row, int col ,MoveInfo move, boolean isWhite){
+        String dest = move.destination;
+        int destCol = dest.charAt(0) - 'a';
+        int destRow = dest.charAt(1) - '1';
+        int dy = Math.abs(destRow - row);
+        int dx = Math.abs(destCol - col);
+        System.out.println(dy);
+        if(dy == 2) return dest;
+        return null;
+    }
+    public static boolean validPawn(Board board,int row, int col ,MoveInfo move, boolean isWhite, String enPassant_able) {
         String dest = move.destination;
         int destCol = dest.charAt(0) - 'a';
         int destRow = dest.charAt(1) - '1';
@@ -35,18 +46,30 @@ public class Pieces {
         if(!move.capture && col != destCol) {
             return false;
         }
+        System.out.println(enPassant_able);
+        if (move.enPassant){
+            if(enPassant_able == null) return false;
+                // none passantable
+//
+            int passantCol = enPassant_able.charAt(0) - 'a';
+            int passantRow = enPassant_able.charAt(1) - '1';
+            int pdx = Math.abs(passantCol - col);
+            int pdy = Math.abs(passantRow - row);
+            return isWhite ? pdy == 0 && pdx == 1 && destRow == row + 1 : pdy == 0 && destRow == row - 1 && pdx == 1;
+        }
         if(isWhite) {
             if (move.capture){
+
 //                if square is not empty, check if pawn moves diagonally and if square is in reach
-                return (dx == 1 && dy == 1) && destRow > row;
+                return dx == 1 && destRow == row + 1;
             }else{
-                return (dy <= 2 && row == 1) || (dy == 1 && row > 2) && destRow <= 7;
+                return (row == 1 && destRow == 3) || (row + 1 == destRow);
             }
         }else{
             if (move.capture){
-                return (dx == 1 && dy == 1) && destRow < row;
+                return dx == 1 && destRow == row - 1;
             }else{
-                return (dy <= 2 && row == 6) || (dy == 1 && row < 6) && destRow >= 0;
+                return (row == 6 && destRow == 4) || (row - 1 == destRow);
             }
 
         }
@@ -111,6 +134,7 @@ public class Pieces {
         // check how many squares moved horizontally and vertically
         int dy = Math.abs(destRow - row);
         int dx = Math.abs(destCol - col);
+        if(Pieces.isChecked(board,destRow,destCol ,true,true)) return false;
 
         return dy <= 1 && dx <= 1;
     }
@@ -207,11 +231,14 @@ public class Pieces {
 
             while (rows >= 0 && rows < 8 && cols >= 0 && cols < 8) {
                 int piece = board.getPiece(rows, cols);
-                if(piece == 0) continue;
+                if(piece == 0) {
+                    rows += k;
+                    cols += j;
+                    continue;
+                }
                 if((isWhite && piece < 0) || (!isWhite && piece > 0)) break;
                 if (piece != queen && piece != bishop) break;
-                rows += k;
-                cols += j;
+
                 return true;
 
             }
@@ -258,6 +285,7 @@ public class Pieces {
             if (isChecked(board,Row,4,isWhite,true)) return false;
             for(int i = 5; i < 7; i++){
                 if(board.getPiece(Row,i) != 0) return false;
+                if(isChecked(board,Row,i,isWhite,true)) return false;
             }
         }else{
             if(movements[0] || movements[2]) return false;
@@ -266,6 +294,7 @@ public class Pieces {
             if (isChecked(board,Row,4,isWhite,true)) return false;
             for(int i = 1; i < 4; i++){
                 if(board.getPiece(Row,i) != 0) return false;
+                if(isChecked(board,Row,i,isWhite,true)) return false;
             }
 
         }
