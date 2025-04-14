@@ -6,13 +6,18 @@ public class Board {
     public Board() {
         board = new Piece[8][8];
         alternateInitialize();
-//        initialize();
+//  initialize();
     }
 
     public int[][] getBoard() {
         return this.alternativeBoard;
     }
-
+    public void setBoard(int row,int col,int val){
+        this.alternativeBoard[row][col] = val;
+    }
+    public int getPiece(int row,int col){
+        return this.alternativeBoard[row][col];
+    }
     public final void alternateInitialize() {
         alternativeBoard[0][0] = -6;
         alternativeBoard[0][1] = -5;
@@ -47,7 +52,6 @@ public class Board {
         board[0][5] = new Bishop("white", true);
         board[0][6] = new Knight("white", true);
         board[0][7] = new Rook("white", true);
-
         //initialize white Pawns
         for (int i = 0; i < 8; i++) {
             board[1][i] = new Pawn("white", i);
@@ -66,7 +70,6 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             board[6][i] = new Pawn("black", i);
         }
-        
     }
 
     public static String getSymbol(int value) {
@@ -87,6 +90,7 @@ public class Board {
             for (int col = 0; col < 8; col++) {
                 int piece = this.alternativeBoard[row][col];
                 System.out.print(getSymbol(piece) + " ");
+//                System.out.print(piece + " " + col + " ");
             }
             System.out.println();
         }
@@ -94,6 +98,4 @@ public class Board {
             System.out.print("  " + c);
         }
     }
-
-    
 }
