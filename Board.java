@@ -1,10 +1,10 @@
 import Pieces.*;
 
 public class Board {
-    Piece[][] board;
-    final private int[][] alternativeBoard = new int[8][8];
+    int[][] board;
+    private int[][] alternativeBoard = new int[8][8];
     public Board() {
-        board = new Piece[8][8];
+//        board = new Piece[8][8];
         alternateInitialize();
 //  initialize();
     }
@@ -42,36 +42,77 @@ public class Board {
             alternativeBoard[6][i] = 1;
         }
     }
-    public final void initialize() {
-        // initialize white pieces
-        board[0][0] = new Rook("white", false);
-        board[0][1] = new Knight("white", false);
-        board[0][2] = new Bishop("white", false);
-        board[0][3] = new Queen("white");
-        board[0][4] = new King("white");
-        board[0][5] = new Bishop("white", true);
-        board[0][6] = new Knight("white", true);
-        board[0][7] = new Rook("white", true);
-        //initialize white Pawns
-        for (int i = 0; i < 8; i++) {
-            board[1][i] = new Pawn("white", i);
-        }
-        //initialize black Pieces
-        board[7][0] = new Rook("black", false);
-        board[7][1] = new Knight("black", false);
-        board[7][2] = new Bishop("black", false);
-        board[7][3] = new Queen("black");
-        board[7][4] = new King("black");
-        board[7][5] = new Bishop("black", true);
-        board[7][6] = new Knight("black", true);
-        board[7][7] = new Rook("black", true);
 
-        //initialize black Pawns
-        for (int i = 0; i < 8; i++) {
-            board[6][i] = new Pawn("black", i);
-        }
+    public final void illegalCaptureEmptySquare() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[0][0] = -6; // White rook on a1
+        alternativeBoard[1][4] = -1; // White pawn on e2
+        // Rook tries to capture on e5, but e5 is empty
     }
 
+    public final void illegalCaptureOwnPiece() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[0][1] = -5; // White knight on b1
+        alternativeBoard[2][5] = -1; // White pawn on f3
+        // Knight tries to capture on f3
+    }
+
+    public final void illegalRookThroughPieces() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[7][0] = -6; // White rook on a1
+        alternativeBoard[6][0] = -1; // White pawn blocking a2
+        // Rook tries to move a1 to a8
+    }
+
+    public final void illegalCastleWhileInCheck() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[0][4] = -2; // White king on e1
+        alternativeBoard[0][7] = -6; // White rook on h1
+        alternativeBoard[7][4] = 3;  // Black queen on e8 attacking e1
+        // Attempt: White castles king-side
+    }
+
+    public final void illegalCastleThroughCheck() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[0][4] = -2; // White king on e1
+        alternativeBoard[0][7] = -6; // White rook on h1
+        alternativeBoard[3][5] = 3;  // Black queen attacking f1
+        // Attempt: White castles king-side
+    }
+
+    public final void illegalCastleAfterKingMoved() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[1][4] = -2; // White king (assume has moved)
+        alternativeBoard[0][0] = -6; // White rook on a1
+        // You would mark internally that the king has moved
+    }
+
+    public final void illegalKnightMove() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[1][1] = -5; // White knight on b1
+        alternativeBoard[4][4] = 1;  // Black pawn on e5
+        // Attempt: Knight tries to take e5 diagonally
+    }
+
+    public final void illegalMoveIntoCheck() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[0][5] = -2; // White king on e1
+        alternativeBoard[2][4] = 3;  // Black queen on e3, attacking e2
+        // Attempt: Ke2
+    }
+
+    public final void illegalPawnCaptureEmpty() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[1][4] = -1; // White pawn on e2
+        alternativeBoard[2][3] = 0;  // d5 is empty
+        // Attempt: exd5
+    }
+
+    public final void illegalPromotionPiece() {
+        this.alternativeBoard = new int[8][8];
+        alternativeBoard[0][4] = -1; // White pawn on e1
+        // Attempt: e8=Z (invalid piece type)
+    }
     public static String getSymbol(int value) {
         switch (Math.abs(value)) {
             case 1: return value > 0 ? "♙ " : "♟ "; // Pawn
