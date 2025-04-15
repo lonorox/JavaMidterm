@@ -1,3 +1,7 @@
+package Chess;
+import GM.GameMaster;
+import PgnAnalyzers.PGNReader;
+
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.BufferedReader;
