@@ -1,12 +1,14 @@
+package PgnAnalyzers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
-
+import Chess.*;
 public class PGNReader {
-    List<ChessGame> games;
+     List<ChessGame> games;
 
     public PGNReader() {
         games = new ArrayList<>();

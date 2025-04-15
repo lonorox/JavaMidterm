@@ -1,21 +1,23 @@
+package PgnAnalyzers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoveInfo {
-    String piece;
-    String location;
-    boolean capture;
-    String destination;
-    boolean check;
-    boolean checkmate;
-    String promotion;
-    boolean castlingKing;
-    boolean castlingQueen;
-    boolean enPassant;
+    public String piece;
+    public String location;
+    public boolean capture;
+    public String destination;
+    public boolean check;
+    public boolean checkmate;
+    public String promotion;
+    public boolean castlingKing;
+    public boolean castlingQueen;
+    public boolean enPassant;
 
-    void decipherMove(String move){
+    public void decipherMove(String move){
         String positionsRegex = "[a-h][1-8]";
         String piece = "";
         String location = "";

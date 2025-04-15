@@ -1,18 +1,39 @@
 package Pieces;
 
+import Chess.Board;
+import PgnAnalyzers.MoveInfo;
+
 public class Knight extends Piece {
     final private boolean KingSide;
+    final private String type;
+
     public Knight(String color, boolean KingSide) {
         super(color);
+        this.type = "Night";
         this.KingSide = KingSide;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public boolean isKingSide() {
         return KingSide;
     }
-    
+
     @Override
-    public boolean isValidMove(String start, String end,Piece[][] board) {
-        return true;
+    public String draw(){
+        return (!this.getColor().equals("white")) ? "♘ " : "♞ "; // Knight
+    }
+    @Override
+    public boolean isValidMove(Board board, int row, int col, MoveInfo move, boolean isWhite, String e) {
+        int destCol = move.destination.charAt(0) - 'a';
+        int destRow = move.destination.charAt(1) - '1';
+        // check how many squares moved horizontally and vertically
+        int dy = Math.abs(destRow - row);
+        int dx = Math.abs(destCol - col);
+
+        return (dy == 2 && dx == 1) || (dy == 1 && dx == 2);
     }
 }
+
