@@ -24,10 +24,12 @@ public class Chess{
 
     public void run(String fileName){
         PGNReader reader = new PGNReader();
+        int numberOfGames = 0;
         List<Future<GameResult>> results = new ArrayList<>();
         try {
             BufferedReader file = readPgn(fileName);
             reader.extractGames(file);
+            numberOfGames = reader.getGames().size();
         } catch (IOException e) {
             System.out.println("File not found");
         }
@@ -81,6 +83,7 @@ public class Chess{
             }
         }
 //        output number of valid and invalid games
+        System.out.println(" games extracted: " + numberOfGames);
         System.out.println(" Valid games: " + counterValid.get());
         System.out.println(" InValid games: " + counterInvalid.get());
 

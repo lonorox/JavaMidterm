@@ -25,13 +25,48 @@ public class PGNReader {
         return games;
     }
 
+
+
     private boolean isValidMovetext(String movetext) {
-        Pattern movePattern = Pattern.compile("\\s*(\\d{1,3})\\.?\\s*((?:(?:O-O(?:-O)?)|(?:[KQNBR][1-8a-h]?x?[a-h]x?[1-8])|(?:[a-h]x?[a-h]?[1-8]\\=?[QRNB]?))\\+?)(?:\\s*\\d+\\.?\\d+?m?s)?\\.?\\s*((?:(?:O-O(?:-O)?)|(?:[KQNBR][1-8a-h]?x?[a-h]x?[1-8])|(?:[a-h]x?[a-h]?[1-8]\\=?[QRNB]?))\\+?)?(?:\\s*\\d+\\.?\\d+?m?s)?\n");
+        // Quick fail checks for obvious errors
+        String cleanedMovetext = movetext// Remove comments in curly braces// Remove variations in parentheses
+                .replaceAll("\\$\\d+", "")            // Remove NAG annotations
+                .replaceAll("1-0|0-1|1/2-1/2|\\*", "") // Remove game result
+                .trim();
 
-        Matcher matcher = movePattern.matcher(movetext);
+        Pattern moveGroupPattern = Pattern.compile("(\\d+)\\.\\s*(.*?)(?=\\s+\\d+\\.|$)");
+        Matcher moveGroupMatcher = moveGroupPattern.matcher(cleanedMovetext);
+        int expectedMoveNumber = 1;
 
-        // We’ll count how many full turns (number + two moves) we find
-        return matcher.find();// At least some valid turns found
+        String validMovePattern =
+                "([KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?|O-O(?:-O)?|0-0(?:-0)?)[+#]?";
+
+        while (moveGroupMatcher.find()) {
+            // Extract current move number
+            int currentMoveNumber = Integer.parseInt(moveGroupMatcher.group(1));
+            String movePair = moveGroupMatcher.group(2).trim();
+
+            // Check for missing move numbers
+            if (currentMoveNumber != expectedMoveNumber) {
+                return false;
+            }
+            String[] moves = movePair.split("\\s+");
+            //at least whites should move
+            if (moves.length == 0) {
+                return false;
+            }
+            // Check for incomplete moves like
+            for (String move : moves) {
+                if (move.matches("[KQRBNP]?x$") || !move.matches(validMovePattern)) {
+                    return false;
+                }
+            }
+            //increment expected move number
+            expectedMoveNumber++;
+        }
+
+        return true;
+
     }
 
     public void extractGames(BufferedReader file) throws IOException {
@@ -44,10 +79,10 @@ public class PGNReader {
                 // if there is a movetext, add the game to the list, and reset the movetext and tags
                 if (!movetextBuilder.isEmpty()) {
 
-//                    if(!isValidMovetext(movetextBuilder.toString())) {
-                    String movetext = movetextBuilder.toString().trim();
-                    addGame(new ChessGame(tags, movetext));
-
+                    if(isValidMovetext(movetextBuilder.toString())) {
+                        String movetext = movetextBuilder.toString().trim();
+                        addGame(new ChessGame(tags, movetext));
+                    }
                     movetextBuilder = new StringBuilder();
                     tags = new HashMap<>();
                 }

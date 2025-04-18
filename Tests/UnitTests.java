@@ -1,7 +1,6 @@
 package Tests;
 
 import Chess.Board;
-import Exceptions.InvalidMoveException;
 import PgnAnalyzers.MoveInfo;
 import org.junit.jupiter.api.Test;
 import GM.GameMaster;
@@ -20,12 +19,9 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("Nf6");
         System.out.println();
-        try {
-            boolean result = gm.analyzeMove(move,false);
-            assertTrue(result);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+        boolean result = gm.analyzeMove(move,false);
+        assertTrue(result);
+
         gm.drawBoard();
     }
     @Test
@@ -65,11 +61,7 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("Nxf3");
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move,true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+        result = gm.analyzeMove(move,true);
         assertFalse(result); // Should be illegal
     }
 
@@ -83,11 +75,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("Rxe5"); // Rook tries to capture an empty square
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
     @Test
@@ -100,11 +89,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("O-O"); // Castling while in check
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
 
@@ -118,11 +104,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("O-O"); // Castling through check (f1 attacked)
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
 
@@ -136,11 +119,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("O-O-O"); // Castling after king moved
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
 
@@ -154,11 +134,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("Nxe5"); // Knight tries to move diagonally
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
 
@@ -172,11 +149,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("Kf2"); // King moves into check
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
 
     }
@@ -191,11 +165,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("exd5"); // Pawn tries to capture empty square
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
 
@@ -209,11 +180,8 @@ public class UnitTests {
         MoveInfo move = new MoveInfo();
         move.decipherMove("e8=Z"); // Invalid promotion piece
         boolean result = false;
-        try {
-            result = gm.analyzeMove(move, true);
-        } catch (InvalidMoveException e) {
-            throw new RuntimeException(e);
-        }
+
+        result = gm.analyzeMove(move, true);
         assertFalse(result);
     }
     @Test

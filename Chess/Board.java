@@ -23,6 +23,9 @@ public class Board {
     public Piece[][] getBoard() {
         return this.board;
     }
+    public void setBoard(Piece[][] board) {
+        this.board = board;
+    }
     public void setBoard(int row,int col,Piece val){
         this.board[row][col] = val;
     }

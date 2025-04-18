@@ -30,14 +30,16 @@ public class King extends Piece {
         // check how many squares moved horizontally and vertically
         int dy = Math.abs(destRow - row);
         int dx = Math.abs(destCol - col);
-        if(isChecked(board,destRow,destCol ,isWhite,true)){
-            return  ValidationResult.failure("This move leaves king vulnerable");
-        };
+//        Board tempBoard = new Board();
+//        tempBoard.setBoard(board.getBoard());
+//        tempBoard.setBoard(destRow,destCol,null);
+//        if(isChecked(board,destRow,destCol ,isWhite,true)){
+//            return  ValidationResult.failure("This move leavesz king vulnerable");
+//        };
 
         if(dy <= 1 && dx <= 1){
             return ValidationResult.success();
         }else {
-//            ErrorLogger.log("Invalid king move");
             return ValidationResult.failure("Invalid king move");
         }
     }

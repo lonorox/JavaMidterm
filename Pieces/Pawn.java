@@ -64,7 +64,7 @@ public class Pawn extends Piece {
                     return ValidationResult.failure("White pawn can only capture up diagonally");
                 }
             }else{
-                if((row == 1 && destRow == 3) || (row + 1 == destRow)){
+                if(((row == 1 && destRow == 3) && board.getPiece(3,col) == null && board.getPiece(2,col) == null )|| (row + 1 == destRow)){
                     return ValidationResult.success();
                 }else{
                     return ValidationResult.failure("White pawn can only move up diagonally");
@@ -78,7 +78,8 @@ public class Pawn extends Piece {
                     return ValidationResult.failure("Black pawn can only capture down diagonally");
                 }
             }else{
-                if((row == 6 && destRow == 4) || (row - 1 == destRow)){
+                if(((row == 6 && destRow == 4) && board.getPiece(4,col) == null && board.getPiece(5,col) == null)
+                        || (row - 1 == destRow)){
                     return ValidationResult.success();
                 }else {
                     return ValidationResult.failure("Black pawn can only move up diagonally" );

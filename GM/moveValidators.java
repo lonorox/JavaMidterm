@@ -8,7 +8,7 @@ public class moveValidators {
     public static boolean checkValidity(Board board, MoveInfo move, int row, int col, boolean isWhite) {
         int destCol = move.destination.charAt(0) - 'a';
         int destRow = move.destination.charAt(1) - '1';
-        if(board.getPiece(row,col) == null) return true;
+        if(board.getPiece(row,col) == null) return false;
         if(move.capture){
             if(board.getPiece(destRow,destCol) == null && !move.enPassant){
                 return false;

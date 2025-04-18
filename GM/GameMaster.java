@@ -1,10 +1,8 @@
 package GM;
 import Chess.Board;
-import Exceptions.ErrorLogger;
 import Exceptions.ValidationResult;
 import PgnAnalyzers.MoveInfo;
 import Pieces.*;
-import Exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,13 +51,10 @@ public class GameMaster {
             }
             String by = (isWhite)? "White" : "Black";
 
-            try {
-                if (!analyzeMove(move,isWhite)) {
-                    return new GameResult(Arrays.copyOfRange(this.game,0,i+1),false,this.moveError,this.board.saveBoard());
-                };
-            } catch (InvalidMoveException e) {
-                throw new RuntimeException(e);
-            }
+            if (!analyzeMove(move,isWhite)) {
+                return new GameResult(Arrays.copyOfRange(this.game,0,i+1),false,this.moveError,this.board.saveBoard());
+            };
+
             moveErrors.clear();
             this.boardState += "\n" + this.board.saveBoard();
 
@@ -94,6 +89,7 @@ public class GameMaster {
         }
 
     }
+
     private boolean movePieces(MoveInfo move, int row, int col,String color, boolean isWhite,int destCol,int destRow){
         char piece = move.piece.charAt(0);
         Piece temp = board.getPiece(row,col);
@@ -134,6 +130,7 @@ public class GameMaster {
         Piece temp = tempBoard[row][col];
         if (temp == null) return false;
 //        find if piece is on square
+        if(temp.getType().charAt(0) != piece) return false;
         if (temp.getType().charAt(0) == piece) {
 //            check if piece on square is piece indicated in a move
             if(!temp.getColor().equals(color)) return false;
@@ -144,12 +141,13 @@ public class GameMaster {
                 return true;
             }else{
                 moveErrors.add(res.getReason());
+                moveError = res.getReason();
                 return false;
             }
         }
         return false;
     }
-    public boolean analyzeMove(MoveInfo move,boolean isWhite) throws InvalidMoveException {
+    public boolean analyzeMove(MoveInfo move,boolean isWhite)  {
 
         String color = (isWhite)? "white" : "black";
         if (move.castlingQueen || move.castlingKing) {
@@ -189,7 +187,6 @@ public class GameMaster {
 
                     }
                 }
-
             }
             if(!foundValid) return false;
             movePieces(move,vrow,vcol,color,isWhite,destCol,destRow);
@@ -246,7 +243,7 @@ public class GameMaster {
         return !isChecked(board, 0, 0, isWhite, false);
     }
 
-    private boolean handleCastling(boolean isWhite, MoveInfo move, String color) throws InvalidMoveException{
+    private boolean handleCastling(boolean isWhite, MoveInfo move, String color){
         int Row = isWhite ? 0 : 7;
 //    check if king is checked
         if (isChecked(board,Row,4,isWhite,true)) {

@@ -1,8 +1,6 @@
 package Pieces;
 
 import Chess.Board;
-import Exceptions.ErrorLogger;
-import Exceptions.InvalidMoveException;
 import Exceptions.ValidationResult;
 import PgnAnalyzers.MoveInfo;
 

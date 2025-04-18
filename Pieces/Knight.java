@@ -39,7 +39,7 @@ public class Knight extends Piece {
         }else {
             boolean x = dy != 2 && dy != 1;
             boolean y = dx != 2 && dx != 1;
-            String message = "something something "
+            String message = "Knight can only move L shape "
                     + (x ? "invalid vertical movement " : " ")
                     + (y ? "invalid horizontal movement " : " ");
             return ValidationResult.failure(message);
