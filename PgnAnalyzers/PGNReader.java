@@ -1,12 +1,14 @@
+package PgnAnalyzers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
-
+import Chess.*;
 public class PGNReader {
-    List<ChessGame> games;
+     List<ChessGame> games;
 
     public PGNReader() {
         games = new ArrayList<>();
@@ -23,15 +25,18 @@ public class PGNReader {
     public void extractGames(BufferedReader file) throws IOException {
         StringBuilder movetextBuilder = new StringBuilder();
         Map<String, String> tags = new HashMap<>();
-        
         String line = file.readLine();
         while (line != null) {
             //check if line is a tag by searching for "[" and "]"
             if (line.contains("[") && line.contains("]")) {
                 // if there is a movetext, add the game to the list, and reset the movetext and tags
                 if (!movetextBuilder.isEmpty()) {
+
+//                    if(movetextBuilder.toString().matches(regex)) {
                     String movetext = movetextBuilder.toString().trim();
                     addGame(new ChessGame(tags, movetext));
+//                    }
+
                     movetextBuilder = new StringBuilder();
                     tags = new HashMap<>();
                 }
@@ -44,6 +49,7 @@ public class PGNReader {
             if (!line.startsWith("[") && !line.trim().isEmpty()) {
                 movetextBuilder.append(line).append(" ");
             }
+
             line = file.readLine();
         }
 
