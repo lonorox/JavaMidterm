@@ -170,8 +170,8 @@ public class moveValidators {
             int k = dir[0];
             int j = dir[1];
 
-            int rows = row;
-            int cols = col;
+            int rows = row+k;
+            int cols = col+j;
 
             while (rows >= 0 && rows < 8 && cols >= 0 && cols < 8) {
                 Piece piece = board.getPiece(rows, cols);
