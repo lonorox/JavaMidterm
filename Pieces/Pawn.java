@@ -1,5 +1,7 @@
 package Pieces;
 import Chess.Board;
+import Exceptions.ErrorLogger;
+import Exceptions.ValidationResult;
 import PgnAnalyzers.MoveInfo;
 public class Pawn extends Piece {
     final private int id;
@@ -27,39 +29,62 @@ public class Pawn extends Piece {
         return (!this.getColor().equals("white")) ? "♙ " : "♟ "; // Pawn
     }
     @Override
-    public boolean isValidMove(Board board, int row, int col , MoveInfo move, boolean isWhite, String enPassant_able) {
+    public ValidationResult isValidMove(Board board, int row, int col , MoveInfo move, boolean isWhite, String enPassant_able) {
         String dest = move.destination;
         int destCol = dest.charAt(0) - 'a';
         int destRow = dest.charAt(1) - '1';
         int dy = Math.abs(destRow - row);
         int dx = Math.abs(destCol - col);
         if(!move.capture && col != destCol) {
-            return false;
+            return ValidationResult.failure("Pawn can move diagonally only when capturing");
         }
         if (move.enPassant){
-            if(enPassant_able == null) return false;
+            if(enPassant_able == null) {
+                return ValidationResult.failure("Nothing can be captured using en passant");
+            }
             // none passantable
 //
             int passantCol = enPassant_able.charAt(0) - 'a';
             int passantRow = enPassant_able.charAt(1) - '1';
             int pdx = Math.abs(passantCol - col);
             int pdy = Math.abs(passantRow - row);
-            return isWhite ? pdy == 0 && pdx == 1 && destRow == row + 1 : pdy == 0 && destRow == row - 1 && pdx == 1;
+            boolean ans = isWhite ? pdy == 0 && pdx == 1 && destRow == row + 1 : pdy == 0 && destRow == row - 1 && pdx == 1;
+            if(ans){
+                return ValidationResult.success();
+            }else{
+                return ValidationResult.failure("En passant not possible");
+            }
         }
         if(isWhite) {
             if (move.capture){
 //                if square is not empty, check if pawn moves diagonally and if square is in reach
-                return dx == 1 && destRow == row + 1;
+                if (dx == 1 && destRow == row + 1) {
+                    return ValidationResult.success();
+                }else{
+                    return ValidationResult.failure("White pawn can only capture up diagonally");
+                }
             }else{
-                return (row == 1 && destRow == 3) || (row + 1 == destRow);
+                if((row == 1 && destRow == 3) || (row + 1 == destRow)){
+                    return ValidationResult.success();
+                }else{
+                    return ValidationResult.failure("White pawn can only move up diagonally");
+                }
             }
         }else{
             if (move.capture){
-                return dx == 1 && destRow == row - 1;
+                if(dx == 1 && destRow == row - 1){
+                    return ValidationResult.success();
+                }else{
+                    return ValidationResult.failure("Black pawn can only capture down diagonally");
+                }
             }else{
-                return (row == 6 && destRow == 4) || (row - 1 == destRow);
+                if((row == 6 && destRow == 4) || (row - 1 == destRow)){
+                    return ValidationResult.success();
+                }else {
+                    ErrorLogger.log("Black pawn can only move down");
+                    return ValidationResult.failure("Black pawn can only move up diagonally" );
+                }
             }
-
         }
     }
 }

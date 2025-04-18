@@ -1,0 +1,28 @@
+[2025-04-16T20:39:12.058744] Black pawn can only move down
+[2025-04-16T20:39:12.156315] Unable to castle
+[2025-04-16T20:39:12.160461] No such move for piece found: [White pawn can only capture up diagonally]
+[2025-04-16T20:39:12.206919] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.208652] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.231036] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.239252] Black pawn can only move down
+[2025-04-16T20:39:12.279466] No such move for piece found: [Pawn can move diagonally only when capturing, Pawn can move diagonally only when capturing, Pawn can move diagonally only when capturing, Pawn can move diagonally only when capturing, White pawn can only move up diagonally]
+[2025-04-16T20:39:12.336415] Black pawn can only move down
+[2025-04-16T20:39:12.370740] Unable to castle
+[2025-04-16T20:39:12.386459] Unable to castle
+[2025-04-16T20:39:12.393565] Unable to castle
+[2025-04-16T20:39:12.438975] Black pawn can only move down
+[2025-04-16T20:39:12.461388] Unable to castle
+[2025-04-16T20:39:12.482320] Black pawn can only move down
+[2025-04-16T20:39:12.518231] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.525679] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.560088] Unable to castle
+[2025-04-16T20:39:12.581600] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.589617] Black pawn can only move down
+[2025-04-16T20:39:12.590497] Unable to castle
+[2025-04-16T20:39:12.609473] Unable to castle
+[2025-04-16T20:39:12.623561] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.641437] Black pawn can only move down
+[2025-04-16T20:39:12.647710] Unable to castle
+[2025-04-16T20:39:12.692614] Unable to castle
+[2025-04-16T20:39:12.695212] No such move for piece found: [This move leaves king vulnerable]
+[2025-04-16T20:39:12.702215] No such move for piece found: [Path is blocked by another piece]

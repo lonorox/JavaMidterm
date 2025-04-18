@@ -1,6 +1,7 @@
 package Pieces;
 
 import Chess.Board;
+import Exceptions.ValidationResult;
 import PgnAnalyzers.MoveInfo;
 
 public abstract class Piece {
@@ -22,6 +23,6 @@ public abstract class Piece {
 
     public abstract String draw();
 
-    public abstract boolean isValidMove(Board board, int row, int col , MoveInfo move, boolean isWhite, String enPassant_able);
+    public abstract ValidationResult isValidMove(Board board, int row, int col , MoveInfo move, boolean isWhite, String enPassant_able);
 
 }
