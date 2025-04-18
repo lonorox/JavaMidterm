@@ -56,7 +56,7 @@ public class GameMaster {
             };
 
             moveErrors.clear();
-            this.boardState += "\n" + this.board.saveBoard();
+            this.boardState = this.board.saveBoard();
 
         }
         return new GameResult(null,true,"",this.boardState);
