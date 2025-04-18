@@ -190,7 +190,7 @@ public class GameMaster {
             }
             if(!foundValid) return false;
             movePieces(move,vrow,vcol,color,isWhite,destCol,destRow);
-            return true;
+//            return true;
 
         }else if (move.location.length() == 2) {
 //            we have both location of piece and destination
