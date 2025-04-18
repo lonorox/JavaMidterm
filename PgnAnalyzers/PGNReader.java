@@ -6,6 +6,9 @@ import java.util.Map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import Chess.*;
 public class PGNReader {
      List<ChessGame> games;
@@ -21,7 +24,16 @@ public class PGNReader {
     public List<ChessGame> getGames() {
         return games;
     }
-    
+
+    private boolean isValidMovetext(String movetext) {
+        Pattern movePattern = Pattern.compile("\\s*(\\d{1,3})\\.?\\s*((?:(?:O-O(?:-O)?)|(?:[KQNBR][1-8a-h]?x?[a-h]x?[1-8])|(?:[a-h]x?[a-h]?[1-8]\\=?[QRNB]?))\\+?)(?:\\s*\\d+\\.?\\d+?m?s)?\\.?\\s*((?:(?:O-O(?:-O)?)|(?:[KQNBR][1-8a-h]?x?[a-h]x?[1-8])|(?:[a-h]x?[a-h]?[1-8]\\=?[QRNB]?))\\+?)?(?:\\s*\\d+\\.?\\d+?m?s)?\n");
+
+        Matcher matcher = movePattern.matcher(movetext);
+
+        // We’ll count how many full turns (number + two moves) we find
+        return matcher.find();// At least some valid turns found
+    }
+
     public void extractGames(BufferedReader file) throws IOException {
         StringBuilder movetextBuilder = new StringBuilder();
         Map<String, String> tags = new HashMap<>();
@@ -32,10 +44,9 @@ public class PGNReader {
                 // if there is a movetext, add the game to the list, and reset the movetext and tags
                 if (!movetextBuilder.isEmpty()) {
 
-//                    if(movetextBuilder.toString().matches(regex)) {
+//                    if(!isValidMovetext(movetextBuilder.toString())) {
                     String movetext = movetextBuilder.toString().trim();
                     addGame(new ChessGame(tags, movetext));
-//                    }
 
                     movetextBuilder = new StringBuilder();
                     tags = new HashMap<>();

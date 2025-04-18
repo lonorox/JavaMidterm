@@ -1,7 +1,6 @@
 package GM;
 
 import Chess.Board;
-import Exceptions.ErrorLogger;
 import PgnAnalyzers.MoveInfo;
 import Pieces.*;
 
@@ -9,16 +8,13 @@ public class moveValidators {
     public static boolean checkValidity(Board board, MoveInfo move, int row, int col, boolean isWhite) {
         int destCol = move.destination.charAt(0) - 'a';
         int destRow = move.destination.charAt(1) - '1';
-        System.out.println(destRow + " " + destCol);
         if(board.getPiece(row,col) == null) return true;
         if(move.capture){
             if(board.getPiece(destRow,destCol) == null && !move.enPassant){
-                System.out.println("Can not capture empty square from xx xx");
                 return false;
             }
             if(board.getPiece(destRow,destCol) != null){
                 if(board.getPiece(destRow, destCol).getColor().equals(board.getPiece(row,col).getColor())){
-                    System.out.println("Can not capture your own piece");
                     return false;
                 }
             }
@@ -46,30 +42,38 @@ public class moveValidators {
     }
     public static boolean canCastle(Board board, Castling castling, String color, boolean kingSide, int Row) {
         Piece king = board.getPiece(Row,4);
-//        System.out.println(king +" " + King);
         if(king == null) return false;
-
+//        check if king and rook are on positions
         if(!king.getType().equals("King") && !king.getColor().equals(color)) return false;
         boolean isWhite = king.getColor().equals("white");
         if(kingSide){
+//            if king or rook have moved previously, castling is not possible
             if(castling.getKingSide() || castling.getKingMoved()) return false;
             Rook rook = (Rook) board.getPiece(Row,7);
             if (rook == null) return false;
             if(!rook.isKingSide()) return false;
+//            for kingside castling we have rook that is on queenside
             if(!rook.getType().equals("Rook") && !rook.getColor().equals(color)) return false;
             for(int i = 5; i < 7; i++){
+//                check if squares between king and rook are empty
                 if(board.getPiece(Row,i) != null) return false;
-                if(isChecked(board,Row,i,isWhite,true)) return false;
+                if(i <= 6){
+//                    check if king passes location that might be threatened
+                    if(isChecked(board,Row,i,isWhite,true)) return false;
+                }
             }
         }else{
+//            same as above, but foir queenside
             if(castling.getQueenSide()  || castling.getKingMoved()) return false;
-            Rook rook = (Rook) board.getPiece(Row,1);
+            Rook rook = (Rook) board.getPiece(Row,0);
             if (rook == null) return false;
             if(rook.isKingSide()) return false;
             if(!rook.getType().equals("Rook") && !rook.getColor().equals(color)) return false;
             for(int i = 1; i < 4; i++){
                 if(board.getPiece(Row,i) != null) return false;
-                if(isChecked(board,Row,i,isWhite,true)) return false;
+                if(i >= 2){
+                    if(isChecked(board,Row,i,isWhite,true)) return false;
+                }
             }
 
         }
@@ -109,7 +113,7 @@ public class moveValidators {
             kingRow = row;
             kingCol = col;
         }
-        //
+        //check if king is pinned ( he is checked)
         return isPinned(board,kingRow,kingCol,isWhite);
     }
     public static boolean isCheckMate(Board board, int row, int col, MoveInfo move, boolean isWhite) {

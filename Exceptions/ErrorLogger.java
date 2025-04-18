@@ -16,7 +16,7 @@ public class ErrorLogger {
     }
     public static synchronized void log(String message) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
-            writer.write("[" + LocalDateTime.now() + "] " + message);
+            writer.write(message);
             writer.newLine();
         } catch (IOException e) {
             System.err.println("Failed to log error: " + e.getMessage());

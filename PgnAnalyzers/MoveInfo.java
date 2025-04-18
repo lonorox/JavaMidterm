@@ -51,6 +51,7 @@ public class MoveInfo {
                 location = matches.get(0);
                 destination = matches.get(1);
             }else if (matches.size() == 1){
+//                System.out.println(matches.get(0));
                 destination = matches.getFirst();
                 location = "";
             }else{
@@ -64,10 +65,10 @@ public class MoveInfo {
                 piece = "P";
             }
 
-            if (location.isEmpty()){
+            if (location.isEmpty() && !destination.isEmpty()){
                 String disambiguateRank;
                 String disambiguateFile;
-                if (Character.isDigit(move.charAt(0))) {
+                if (Character.isDigit(move.charAt(0)) && piece.equals("P")) {
                     disambiguateRank = move.charAt(0) + "";
                 }else if (Character.isDigit(move.charAt(1)) && !piece.equals("P")) {
                     disambiguateRank = move.charAt(1)+"";
@@ -93,7 +94,7 @@ public class MoveInfo {
 
         if(move.contains("=")){
             int index = move.indexOf("=");
-            promotion = move.substring(index,index+1);
+            promotion = move.substring(index,index+2);
         }
 
         if(move.contains("#")){

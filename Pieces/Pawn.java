@@ -81,7 +81,6 @@ public class Pawn extends Piece {
                 if((row == 6 && destRow == 4) || (row - 1 == destRow)){
                     return ValidationResult.success();
                 }else {
-                    ErrorLogger.log("Black pawn can only move down");
                     return ValidationResult.failure("Black pawn can only move up diagonally" );
                 }
             }
